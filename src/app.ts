@@ -1,75 +1,79 @@
-import render from './lib/render';
-import logger from 'koa-logger';
-import Router  from '@koa/router';
-import koaBody from 'koa-body';
+import Koa from "koa";
+import logger from "koa-logger";
+import path from "path";
+import serve from "koa-static";
+import mount from "koa-mount";
+const router = require("@koa/router")();
+import koaBody from "koa-body";
+import render from "./lib/render";
+import { createServer } from "http";
+import { Server } from "socket.io";
+import Room from "./controller/room";
 
+const app = new Koa();
+app.use(mount("/", serve(path.join(__dirname, "/views/"))));
+const httpServer = createServer(app.callback());
 
-import Koa from 'koa';
-const app = module.exports = new Koa();
-const router = new Router();
+const io = new Server(httpServer);
+
+io.on("connection", (socket) => {
+  console.log(socket.id);
+
+  console.log("a user connected");
+});
 
 // "database"
-
-const posts : [] = [];
-
-// middleware
-
+// Middlewares
 app.use(logger());
 
 app.use(render);
 
 app.use(koaBody());
 
-// route definitions
+// app.use(router.allowedMethods());
 
-router.get('/', list);
-  // .get('/post/new', add)
-  // .get('/post/:id', show)
-  // .post('/post', create);
-
+// Routes
+router
+  .get("/", list)
+  .get("/joinRoom/:id/:roomName", joinRoom)
+  .post("/sendMsgtoRoom/:roomId", sendMsgtoRoom)
+  .get("/listRooms", listRoom);
 app.use(router.routes());
 
-/**
- * Post listing.
- */
-
-async function list(ctx : any) {
-  await ctx.render('index', { posts: posts });
+async function list(ctx: Koa.Context) {
+  await ctx.render("index", {});
 }
 
-/**
- * Show creation form.
- */
+async function joinRoom(ctx: Koa.Context, next: Function) {
+  // await next();
 
-// async function add(ctx) {
-//   await ctx.render('new');
-// }
+  const uuid = ctx.params.id;
+  const roomName = ctx.params.roomName;
+  // const roomNameWithPrefix = `${RoomPrefix}${roomName}`;
+  io.in(uuid).socketsJoin(roomName);
+  io.emit("connected_to_room");
+  ctx.body = {
+    id: ctx.params.id,
+  };
+}
 
-/**
- * Show post :id.
- */
+async function sendMsgtoRoom(ctx: Koa.Context, next: Function) {
+  const roomId = ctx.params.roomId;
+  io.to(roomId).emit("message", {
+    message: "ctx.request.body.message",
+  });
+  ctx.body = {
+    roomId: roomId,
+  };
+}
 
-// async function show(ctx : any) {
-//   const id = ctx.params.id;
-//   const post = posts[id];
-//   if (!post) ctx.throw(404, 'invalid post id');
-//   await ctx.render('show', { post: post });
-// }
+async function listRoom(ctx: Koa.Context, next: Function) {
+  const room = new Room(io);
+  const roomsList = room.listRooms();
 
-/**
- * Create a post.
- */
+  ctx.body = {
+    roomsList,
+  };
+}
 
-// async function create(ctx: ayn) {
-//   const post: = ctx.request.body;
-//   const id = posts.push(post) - 1;
-//   post.created_at = new Date();
-//   post.id = id;
-//   ctx.redirect('/');
-// }
-
-// listen
-
-app.listen(3000, ()  => {
-  console.log('listening on port 3000');
-});
+httpServer.listen(3000);

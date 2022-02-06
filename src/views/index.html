@@ -1,7 +1,36 @@
 <html>
   <head>
-    <title>My App</title>
+    <title>CopyPaste</title>
   </head>
   <body>
-    <h1>Hello World</h1>
+    <section>
+      <h2>Add room</h2>
+      <input
+        type="text"
+        id="roomName"
+        placeholder="Room name"
+        v-model="roomName"
+      />
+      <button id="addRoom">Add</button>
+      <input type="hidden" id="userID" />
+    </section>
+    <ul id="roomlist"></ul>
+
+    <section>
+
+      <h2>send Message</h2>
+      <div>
+        <textarea id="chat" cols="30" rows="10"></textarea>
+        <input type="text" id="message" />
+        <button id="sendMsg">Send Message</button>
+      </div>
+    </section>
+  
   </body>
+  <script
+    src="https://cdn.socket.io/4.4.1/socket.io.min.js"
+    integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H"
+    crossorigin="anonymous"
+  ></script>
+  <script src="/src/public/js/app.js" type="module"></script>
+</html>
