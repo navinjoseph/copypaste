@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.msg-remote {
+    color: red;
+    margin: 2px 0;
+}
+
+.msg-you {
+    color: green;
+    margin: 2px 0;
+}

@@ -26,6 +26,8 @@ class Room {
 
     return roomList;
   }
+
+  
 }
 
 export default Room;

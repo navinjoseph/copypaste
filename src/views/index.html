@@ -1,36 +1,68 @@
 <html>
-  <head>
-    <title>CopyPaste</title>
-  </head>
-  <body>
-    <section>
-      <h2>Add room</h2>
-      <input
-        type="text"
-        id="roomName"
-        placeholder="Room name"
-        v-model="roomName"
-      />
-      <button id="addRoom">Add</button>
-      <input type="hidden" id="userID" />
-    </section>
-    <ul id="roomlist"></ul>
 
-    <section>
+<head>
+  <title>CopyPaste</title>
+  <link href="/src/public/css/index.css" rel="stylesheet">
+</head>
 
-      <h2>send Message</h2>
-      <div>
-        <textarea id="chat" cols="30" rows="10"></textarea>
-        <input type="text" id="message" />
-        <button id="sendMsg">Send Message</button>
+<body>
+  <div class="container mx-auto py-10 w-2/6">
+    <div class="flex">
+      <p class=" flex w-3/6 text-md font-medium leading-6 text-gray-900">Add room</p>
+      <div class="flex-initial w-full">
+        <input type="text" id="roomName" placeholder="Room name" v-model="roomName"
+          class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md" />
       </div>
-    </section>
-  
-  </body>
-  <script
-    src="https://cdn.socket.io/4.4.1/socket.io.min.js"
-    integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H"
-    crossorigin="anonymous"
-  ></script>
-  <script src="/src/public/js/app.js" type="module"></script>
+      <div class="flex-initial w-4/6 ml-1">
+        <button id="addRoom"
+          class="w-full bg-indigo-600 border border-transparent rounded-md py-2 px-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Add</button>
+        <input type="hidden" id="userID" />
+      </div>
+    </div>
+    <div class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+      <ul id="roomlist" role="list" class="border border-gray-200 rounded-md divide-y divide-gray-200 mt-10">
+
+        <li class="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
+          <div class="w-0 flex-1 flex items-center">
+    
+                    <span class="ml-2 flex-1 w-0 truncate"> -rooms-test</span>
+                    </div>
+                      <div class="ml-4 flex-shrink-0">
+                        <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500" id="joinRoom-rooms-test" data-roomname="-rooms-test"> Join </a>
+                      </div>
+                    </li>
+
+      </ul>
+    </div>
+
+  <div class="container mx-auto mt-10">
+    <div id="chat-window" class="flex flex-col flex-1 mx-auto chat-window overflow-scroll  shadow mb-1">
+    </div>
+    <div class="flex justify-center mt-10">
+      <div class="flex w-full ">
+        <input type="text" id="message"
+          class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-4 pr-12 sm:text-sm border-gray-300 rounded-md" />
+      </div>
+      <div class="flex w-40 ml-1">
+        <button id="sendMsg"
+          class="w-full bg-indigo-600 border border-transparent rounded-md py-2 px-3  text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Send</button>
+      </div>
+
+    </div>
+  </div>
+
+
+  <section>
+
+    <!-- <h2>send Message</h2> -->
+
+    </div>
+  </section>
+</div>
+
+</body>
+<script src="https://cdn.socket.io/4.4.1/socket.io.min.js"
+  integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H" crossorigin="anonymous"></script>
+<script src="/src/public/js/app.js" type="module"></script>
+
 </html>

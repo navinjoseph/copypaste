@@ -9,6 +9,7 @@ import render from "./lib/render";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import Room from "./controller/room";
+import Message from "./controller/message";
 
 const app = new Koa();
 app.use(mount("/", serve(path.join(__dirname, "/views/"))));
@@ -36,7 +37,7 @@ app.use(koaBody());
 router
   .get("/", list)
   .get("/joinRoom/:id/:roomName", joinRoom)
-  .post("/sendMsgtoRoom/:roomId", sendMsgtoRoom)
+  .post("/sendMsgtoRoom", sendMsgtoRoom)
   .get("/listRooms", listRoom);
 app.use(router.routes());
 
@@ -57,14 +58,32 @@ async function joinRoom(ctx: Koa.Context, next: Function) {
   };
 }
 
+
+
+
 async function sendMsgtoRoom(ctx: Koa.Context, next: Function) {
-  const roomId = ctx.params.roomId;
-  io.to(roomId).emit("message", {
-    message: "ctx.request.body.message",
-  });
+   const message = new Message(io);
+  const BodyData = <{
+    message: string;
+    senderUserId: string;
+    roomId: string
+  }>ctx.request.body;
+
+  const roomId = BodyData.roomId;
+  const messageToSend = BodyData.message;
+  const sendUserId = BodyData.senderUserId;
+
+  message.sendMessage(sendUserId, messageToSend, roomId);
+
   ctx.body = {
-    roomId: roomId,
+    success: true
   };
+  // io.to(roomId).emit("message", {
+  //   message: "ctx.request.body.message",
+  // });
+  // ctx.body = {
+  //   roomId: roomId,
+  // };
 }
 
 async function listRoom(ctx: Koa.Context, next: Function) {
