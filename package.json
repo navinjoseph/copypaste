@@ -24,11 +24,12 @@
     "typescript": "^4.5.5"
   },
   "scripts": {
-    "run": "nodemon ./dist/app.js && cp -r  ./src/views ./dist/views",
+    "start": "nodemon ./dist/app.js && cp -r  ./src/views ./dist/views",
     "watch-parcel": "npx parcel watch",
     "tsc-watch": "tsc --watch",
-    "build": "npx parcel build && tsc build",
-    "tailwind-watch": "npx tailwindcss -i ./src/public/css/index.css -o ./dist/views/index.css --watch"
+    "build": "npm run clean && tsc && npx parcel build",
+    "tailwind-watch": "npx tailwindcss -i ./src/public/css/index.css -o ./dist/views/index.css --watch",
+    "clean": "rm -rf dist/*"
   },
   "plugins": [
     "transform-async-to-generator"
