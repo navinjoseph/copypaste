@@ -1,5 +1,5 @@
 async function sendMessage(message, roomId, senderUserId) {
-    const send = await fetch(`http://localhost:3000/sendMsgtoRoom`, {
+    const send = await fetch(`${process.env.APP_HOST}/sendMsgtoRoom`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
