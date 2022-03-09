@@ -24,7 +24,7 @@
     "typescript": "^4.5.5"
   },
   "scripts": {
-    "start": "nodemon ./dist/app.js && cp -r  ./src/views ./dist/views",
+    "start": "node ./dist/app.js && cp -r  ./src/views ./dist/views",
     "watch-parcel": "npx parcel watch",
     "tsc-watch": "tsc --watch",
     "build": "npm run clean && tsc && npx parcel build",
