@@ -1,5 +1,5 @@
 const RoomPrefix = "-rooms-";
-
+const HOST = process.env.APP_HOST;
 async function addRoom(userID, roomName) {
   if (roomName === "") {
     return;
@@ -14,14 +14,14 @@ async function joinRoom(userID, roomName) {
   }
 
   const list = await fetch(
-    `http://localhost:3000/joinRoom/${userID}/${roomName}`
+    `${HOST}/joinRoom/${userID}/${roomName}`
   );
   const data = await list.json();
   console.log(data);
 }
 
 async function listRoom() {
-  const list = await fetch("http://localhost:3000/listRooms");
+  const list = await fetch(`${HOST}/listRooms`);
   const data = await list.json();
 
   console.log(data);
