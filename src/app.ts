@@ -94,5 +94,5 @@ async function listRoom(ctx: Koa.Context, next: Function) {
     roomsList,
   };
 }
-
-httpServer.listen(3000);
+var port = process.env.PORT || 3000;
+httpServer.listen(port);
